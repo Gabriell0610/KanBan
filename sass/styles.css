@@ -1,0 +1,196 @@
+.header {
+  padding: 1.5rem 1rem;
+  background: #845ec2;
+  width: 100%;
+}
+
+#nav {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#nav h2 {
+  color: #fff;
+  letter-spacing: 1px;
+}
+
+#open-modalBtn {
+  background-color: #fff;
+  color: #333;
+  font-weight: bold;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.column {
+  width: 280px;
+  min-height: 500px;
+  height: auto;
+  margin: 20px;
+  border-radius: 10px;
+  background-color: #f2f2f2;
+  overflow: hidden;
+}
+
+.column header {
+  background-color: #845ec2;
+  color: #fff;
+  padding: 1rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+#modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+#modal .box {
+  background-color: #fff;
+  padding: 2rem;
+  width: 500px;
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.title span {
+  font-size: 1.2rem;
+  color: #333;
+  letter-spacing: 1px;
+}
+.title button {
+  border: 0;
+  background-color: transparent;
+  font-size: 1.6rem;
+  color: #f33636;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.form-group {
+  margin-bottom: 0.9rem;
+  display: flex;
+  flex-direction: column;
+}
+.form-group input,
+.form-group select {
+  border: 0;
+  border-bottom: 1px solid #333;
+  padding: 0.6rem 0;
+}
+
+.btn-modal {
+  float: right;
+  background-color: #3876BF;
+  color: #fff;
+}
+
+#btn-add-todo {
+  display: block;
+}
+
+#btn-edit-todo {
+  display: none;
+}
+
+.card-todo {
+  border: 2px solid #aaa;
+  border-radius: 4px;
+  padding: 1rem;
+  margin: 10px;
+  font-size: 0.9rem;
+  display: none;
+}
+.card-todo p {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+.card-todo .date-todo {
+  color: #333;
+  font-weight: 400;
+}
+.card-todo .priority-todo {
+  font-weight: bold;
+}
+.card-todo .todo {
+  color: rgb(17, 14, 14);
+  font-family: "Roboto", sans-serif;
+  font-style: italic;
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+.card-todo .high {
+  background-color: #8d2020;
+  color: #fff;
+  font-weight: 400;
+  text-align: center;
+  font-size: 0.9rem;
+  width: 50px;
+  border-radius: 4px;
+  padding: 0.2rem 0.5rem;
+}
+.card-todo .average {
+  background-color: #d3a21a;
+  color: #fff;
+  font-weight: 400;
+  text-align: center;
+  font-size: 0.9rem;
+  width: 50px;
+  border-radius: 4px;
+  padding: 0.2rem 0.5rem;
+}
+.card-todo .low {
+  background-color: #18b418;
+  color: #fff;
+  font-weight: 400;
+  text-align: center;
+  font-size: 0.9rem;
+  width: 50px;
+  border-radius: 4px;
+  padding: 0.2rem 0.5rem;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+}
+
+body {
+  background-color: #d8d7d7;
+  position: relative;
+}
+
+button {
+  padding: 0.45rem 0.5rem;
+  border: 0;
+  cursor: pointer;
+  border-radius: 4px;
+}/*# sourceMappingURL=styles.css.map */

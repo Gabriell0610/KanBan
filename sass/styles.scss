@@ -1,0 +1,30 @@
+
+@import './partials/color';
+@import './partials/layout';
+
+
+* {
+   padding: 0;
+   margin: 0;
+   box-sizing: border-box; 
+   font-family: 'Montserrat', sans-serif;
+}
+
+
+input:focus,
+select:focus {
+   outline: none;
+}
+
+body {
+   background-color: $gray-ligth;
+   position: relative;
+}
+
+button {
+   padding: .45rem .5rem;
+   border: 0;
+   cursor: pointer;
+   border-radius: 4px;
+}
+

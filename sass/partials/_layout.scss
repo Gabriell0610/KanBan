@@ -1,0 +1,195 @@
+.header {
+    padding: 1.5rem 1rem;
+    background: $purple;
+    width: 100%;
+}
+
+#nav {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#nav h2 {
+    color: $white;
+    letter-spacing: $font-1px;
+}
+
+#open-modalBtn {
+    background-color: $white;
+    color: $black;
+    font-weight: bold;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+}
+
+.column {
+    width: 280px;
+    min-height: 500px;
+    height: auto;
+    margin: 20px;
+    border-radius: 10px;
+    background-color: $color-white;
+    overflow: hidden;
+}
+
+.column header {
+    background-color: $purple;
+    color: $white;
+    padding: 1rem;
+    text-align: center;
+    font-weight: 600;
+}
+
+#modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+#modal .box {
+    background-color: $white;
+    padding: 2rem;
+    width: 500px;
+    border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    span {
+        font-size: 1.2rem;
+        color: $black;
+        letter-spacing: 1px;
+    }
+
+    button {
+        border: 0;
+        background-color: transparent;
+        font-size: 1.6rem;
+        color: $red-del;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+
+}
+
+.form-group {
+    margin-bottom: .9rem;
+    display: flex;
+    flex-direction: column;
+
+    input, 
+    select {
+        border: 0;
+        border-bottom: 1px solid $black;
+        padding: .6rem 0;
+    }
+}
+
+.btn-modal {
+    float: right;
+    background-color: $blue-dark;
+    color: $white;
+}
+
+#btn-add-todo {
+    display: block;
+}
+
+#btn-edit-todo {
+    display: none;
+}
+
+.card-todo {
+    border: 2px solid $gray;
+    border-radius: 4px;
+    padding: 1rem;
+    margin: 10px;
+    font-size: 0.9rem;
+    display: none;
+    
+
+    p {
+        margin-bottom: .5rem;
+        font-weight: bold;
+    }
+
+    .date-todo {
+        color: $black;
+        font-weight: 400;
+    }
+
+    .priority-todo {
+        font-weight: bold;
+    }
+
+    .todo {
+        color: rgb(17, 14, 14);
+        font-family: $font-todo;
+        font-style: italic;
+        font-weight: 600;
+        letter-spacing: 2px;
+    }
+
+    
+    .high {
+        background-color: $red-category;
+        color: $white;
+        font-weight: 400;
+        text-align: center;
+        font-size: .9rem;
+        width: 50px;
+        border-radius: 4px;
+        padding: .2rem .5rem;
+    }
+
+    .average {
+        background-color:  $yellow-category;
+        color: $white;
+        font-weight: 400;
+        text-align: center;
+        font-size: 0.9rem;
+        width: 50px;
+        border-radius: 4px;
+        padding: .2rem .5rem;
+    }
+
+    .low {
+        background-color: $green-category;
+        color: $white;
+        font-weight: 400;
+        text-align: center;
+        font-size: 0.9rem;
+        width: 50px;
+        border-radius: 4px;
+        padding: .2rem .5rem;
+    }
+
+}
+
+
+
+
+
+
+
+
