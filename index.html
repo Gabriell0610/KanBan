@@ -1,104 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto:ital,wght@0,400;0,700;1,300&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto:ital,wght@0,400;0,700;1,300&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
     <!--Bibliotecas-->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-    
-    <link rel="stylesheet" href="sass/styles.css">
-    <title>Kanban</title>
-</head>
-<body>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <link rel="stylesheet" href="sass/styles.css" />
+    <title>KanbanDev</title>
+  </head>
+  <body>
     <header class="header">
-        <div id="nav" >
-            <h2>KanbanDev</h2>
-            <button id="open-modalBtn">Nova Tarefa</button>
-        </div>
+      <div id="nav">
+        <h2>Organize seus projetos aqui</h2>
+      </div>
     </header>
 
     <main>
-        <div class="container">
-            <div class="column" id="todo-column">
-                <header >
-                    <span>A Fazer</span>
-                </header>
-                <div id="body">
-                    <!-- <div class="card-todo">
-                        <p>Prazo: <span class="date-todo">10/8/2023</span></p>
-                        <p class="todo">Estudar Js</p>
-                        <p class="priority-todo ">Prioridade: <span class="high">Alta</span></p>
-                    </div> -->
-                </div>
-            </div>
-            <div class="column">
-                <header class="header-card">
-                    <span>Em Progresso</span>
-                </header>
-                <div class="card-todo" >
-                    
-                </div>
-            </div>
-            <div class="column">
-                <header class="header-card" >
-                    <span>Feito</span>
-                </header>
-                <div class="card-todo">
-                    
-                </div>
-            </div>
-            <div class="column">
-                <header class="header-card">
-                    <span>Arquivado</span>
-                </header>
-                <div class="card-todo">
-
-                </div>
-            </div>
+      <div class="container">
+        <div
+          class="column"
+          data-column="1"
+        >
+          <header class="header-todo-column">
+            <span>A Fazer</span>
+            <button class="btn-create-todo">
+              <i class="fa-solid fa-plus"></i>
+            </button>
+          </header>
+          <div class="body"></div>
         </div>
+        <div
+          class="column"
+          data-column="2"
+        >
+          <header class="header-progress">
+            <span>Em Progresso</span>
+            <button class="btn-create-todo">
+              <i class="fa-solid fa-plus"></i>
+            </button>
+          </header>
+          <div class="body"></div>
+        </div>
+        <div
+          class="column"
+          data-column="3"
+        >
+          <header class="header-done">
+            <span>Concluído</span>
+            <button class="btn-create-todo">
+              <i class="fa-solid fa-plus"></i>
+            </button>
+          </header>
+          <div class="body"></div>
+        </div>
+        <div
+          class="column"
+          data-column="4"
+        >
+          <header class="header-arquive">
+            <span>Arquivado</span>
+            <button class="btn-create-todo">
+              <i class="fa-solid fa-plus"></i>
+            </button>
+          </header>
+          <div class="body"></div>
+        </div>
+      </div>
     </main>
 
-    <div id="modal">
-        <div class="box">
-            <div class="title">
-                <span id="title-box">Adicione uma tarefa</span>
-                <button id="btn-closeModal">X</button>
-            </div>
-
-            <div class="form">
-                <input type="hidden" id="id-input">
-
-                <div class="form-group">
-                    <label for="">Nome da tarefa</label>
-                    <input type="text" placeholder="Tarefa" id="todo-input">
-                </div>
-                <div class="form-group">
-                    <label for="">Prazo</label>
-                    <input type="date" id="deadline" >
-                </div>
-                <div class="form-group">
-                    <label for="">Prioridade</label>
-                    <select id="priority">
-                        <option value="Alta">Alta</option>
-                        <option value="Média">Média</option>
-                        <option value="Baixa">Baixa</option>
-                    </select>
-                </div>
-            </div>
-            <button id="btn-add-todo" class="btn-modal">Adicionar</button>
-
-            <button id="btn-edit-todo" class="btn-modal">Editar</button>
+    <div class="modal-container">
+      <div class="box-modal">
+        <div class="title">
+          <span id="title-box">Adicione uma tarefa</span>
+          <button id="btn-closeModal">
+            <i class="fa-solid fa-xmark" style="color: #d40c0c"></i>
+          </button>
         </div>
+
+        <div class="form">
+          <input type="hidden" id="id-input" />
+
+          <div class="form-group">
+            <label for="">Nome da tarefa</label>
+            <input type="text" placeholder="Tarefa" id="todo-input" />
+          </div>
+          <div class="form-group">
+            <label for="">Prazo</label>
+            <input type="date" id="deadline" />
+          </div>
+          <div class="form-group">
+            <label for="">Prioridade</label>
+            <select id="priority">
+              <option value="Alta">Alta</option>
+              <option value="Média">Média</option>
+              <option value="Baixa">Baixa</option>
+            </select>
+          </div>
+          <div class="form-group ">
+            <label for="">Categoria</label>
+            <select id="category">
+              <option value="1">A Fazer</option>
+              <option value="2">Em Progresso</option>
+              <option value="3">Concluido</option>
+              <option value="4">Arquivado</option>
+            </select>
+          </div>
+        </div>
+        <button id="btn-add-todo" class="btn-modal">Adicionar</button>
+
+        <button id="btn-edit-todo" class="btn-modal">Editar</button>
+      </div>
     </div>
 
- 
     <script type="module" src="js/scripts.js"></script>
-</body>
+  </body>
 </html>
