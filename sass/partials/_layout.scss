@@ -1,83 +1,189 @@
 .header {
-    padding: 1.5rem 1rem;
-    background: $purple;
+    padding: 1rem 0;
     width: 100%;
+    background-color: $bg-header;
+    border-bottom: 2px solid $white;
 }
 
 #nav {
-    max-width: 1200px;
-    margin: 0 auto;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
 }
 
 #nav h2 {
     color: $white;
-    letter-spacing: $font-1px;
+    letter-spacing: 1px;
+    text-align: center;
 }
 
-#open-modalBtn {
-    background-color: $white;
-    color: $black;
-    font-weight: bold;
-}
 
 .container {
     display: flex;
     justify-content: center;
-    align-items: center;
     flex-wrap: wrap;
-    margin-top: 2rem;
 }
 
 .column {
-    width: 280px;
-    min-height: 500px;
-    height: auto;
+    width: 300px;
     margin: 20px;
-    border-radius: 10px;
+
+    header {
+        color: $white;
+        background-color: $bg-header;
+        padding: 0 .6rem;
+        height: 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 600;
+
+        .btn-create-todo {
+            background: transparent;
+            font-size: 1rem;
+            padding: 0;
+            color: $white;
+            cursor: pointer;
+        }
+
+    }
+
+    .header-todo-column {
+        background-color: $gray;
+    }
+
+    .header-progress {
+        background-color: $blue-dark;
+    }
+
+    .header-done {
+        background-color: $green-done;
+    }
+
+    .header-arquive {
+        background-color: $yellow-category;
+    }
+    
+}
+
+
+
+.card-todo {
     background-color: $color-white;
-    overflow: hidden;
-}
-
-.column header {
-    background-color: $purple;
-    color: $white;
     padding: 1rem;
-    text-align: center;
-    font-weight: 600;
+    margin: 10px auto;
+    font-size: 0.9rem;
+
+    p {
+        margin-bottom: .5rem;
+        font-weight: bold;
+    }
+
+    .date-todo {
+        color: $color-black;
+        font-weight: 400;
+    }
+
+    .priority-todo {
+        font-weight: 400;
+        text-align: center;
+        font-size: .9rem;
+        width: 50px;
+        border-radius: 4px;
+        padding: .2rem .5rem;
+        color: $white;
+    }
+
+    .todo {
+        color: $color-black;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: 400;
+        letter-spacing: 1px;
+    }
+
+    
+    .high {
+        background-color: $red-category;
+    }
+
+    .average {
+        background-color:  $yellow-category;
+    }
+
+    .low {
+        background-color: $green-category;
+    }
+
+    .date-past {
+        color: $red-del;
+        font-weight: bold;
+    }
+
+    .header-todo  {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .trash {
+       font-size: 1rem;
+       margin-bottom: .4rem;
+       cursor: pointer;
+       color: $color-black;
+    }
 }
 
-#modal {
+.modal-container {
     position: fixed;
     top: 0;
     left: 0;
     bottom: 0;
     right: 0;
-    display: none;
+    display: flex;
     justify-content: center;
     align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: .3s ease-in-out;
+
+    .box-modal {
+        background-color: $bg-modal;
+        padding: 2rem;
+        width: 500px;
+        border-radius: 4px;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    }
 }
 
-#modal .box {
-    background-color: $white;
-    padding: 2rem;
-    width: 500px;
-    border-radius: 4px;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+.modal-show {
+    opacity: 1;
+    pointer-events: auto;
 }
+
 
 .title {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
+    position: relative;
+
 
     span {
         font-size: 1.2rem;
-        color: $black;
+        color: $color-black;
         letter-spacing: 1px;
+    }
+
+    span::after {
+        content: '';
+        position: absolute;
+        background-color: $blue-dark;
+        width: 50px;
+        height: 2px;
+        bottom: .5rem;
+        left: 2px;
+
     }
 
     button {
@@ -100,8 +206,9 @@
     input, 
     select {
         border: 0;
-        border-bottom: 1px solid $black;
+        border-bottom: 1px solid $color-black;
         padding: .6rem 0;
+        background: transparent;
     }
 }
 
@@ -119,71 +226,8 @@
     display: none;
 }
 
-.card-todo {
-    border: 2px solid $gray;
-    border-radius: 4px;
-    padding: 1rem;
-    margin: 10px;
-    font-size: 0.9rem;
+.hidden {
     display: none;
-    
-
-    p {
-        margin-bottom: .5rem;
-        font-weight: bold;
-    }
-
-    .date-todo {
-        color: $black;
-        font-weight: 400;
-    }
-
-    .priority-todo {
-        font-weight: bold;
-    }
-
-    .todo {
-        color: rgb(17, 14, 14);
-        font-family: $font-todo;
-        font-style: italic;
-        font-weight: 600;
-        letter-spacing: 2px;
-    }
-
-    
-    .high {
-        background-color: $red-category;
-        color: $white;
-        font-weight: 400;
-        text-align: center;
-        font-size: .9rem;
-        width: 50px;
-        border-radius: 4px;
-        padding: .2rem .5rem;
-    }
-
-    .average {
-        background-color:  $yellow-category;
-        color: $white;
-        font-weight: 400;
-        text-align: center;
-        font-size: 0.9rem;
-        width: 50px;
-        border-radius: 4px;
-        padding: .2rem .5rem;
-    }
-
-    .low {
-        background-color: $green-category;
-        color: $white;
-        font-weight: 400;
-        text-align: center;
-        font-size: 0.9rem;
-        width: 50px;
-        border-radius: 4px;
-        padding: .2rem .5rem;
-    }
-
 }
 
 

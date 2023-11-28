@@ -1,71 +1,140 @@
 .header {
-  padding: 1.5rem 1rem;
-  background: #845ec2;
+  padding: 1rem 0;
   width: 100%;
+  background-color: #D36B00;
+  border-bottom: 2px solid #fff;
 }
 
 #nav {
-  max-width: 1200px;
-  margin: 0 auto;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 }
 
 #nav h2 {
   color: #fff;
   letter-spacing: 1px;
-}
-
-#open-modalBtn {
-  background-color: #fff;
-  color: #333;
-  font-weight: bold;
+  text-align: center;
 }
 
 .container {
   display: flex;
   justify-content: center;
-  align-items: center;
   flex-wrap: wrap;
-  margin-top: 2rem;
 }
 
 .column {
-  width: 280px;
-  min-height: 500px;
-  height: auto;
+  width: 300px;
   margin: 20px;
-  border-radius: 10px;
-  background-color: #f2f2f2;
-  overflow: hidden;
 }
-
 .column header {
-  background-color: #845ec2;
   color: #fff;
-  padding: 1rem;
-  text-align: center;
+  background-color: #D36B00;
+  padding: 0 0.6rem;
+  height: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   font-weight: 600;
 }
+.column header .btn-create-todo {
+  background: transparent;
+  font-size: 1rem;
+  padding: 0;
+  color: #fff;
+  cursor: pointer;
+}
+.column .header-todo-column {
+  background-color: #aaa;
+}
+.column .header-progress {
+  background-color: #3876BF;
+}
+.column .header-done {
+  background-color: #1f831f;
+}
+.column .header-arquive {
+  background-color: #d3a21a;
+}
 
-#modal {
+.card-todo {
+  background-color: #e7e7e7;
+  padding: 1rem;
+  margin: 10px auto;
+  font-size: 0.9rem;
+}
+.card-todo p {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+.card-todo .date-todo {
+  color: #333;
+  font-weight: 400;
+}
+.card-todo .priority-todo {
+  font-weight: 400;
+  text-align: center;
+  font-size: 0.9rem;
+  width: 50px;
+  border-radius: 4px;
+  padding: 0.2rem 0.5rem;
+  color: #fff;
+}
+.card-todo .todo {
+  color: #333;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+.card-todo .high {
+  background-color: #bd2222;
+}
+.card-todo .average {
+  background-color: #d3a21a;
+}
+.card-todo .low {
+  background-color: #18b418;
+}
+.card-todo .date-past {
+  color: #f33636;
+  font-weight: bold;
+}
+.card-todo .header-todo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.card-todo .trash {
+  font-size: 1rem;
+  margin-bottom: 0.4rem;
+  cursor: pointer;
+  color: #333;
+}
+
+.modal-container {
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
-  display: none;
+  display: flex;
   justify-content: center;
   align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.3s ease-in-out;
 }
-
-#modal .box {
-  background-color: #fff;
+.modal-container .box-modal {
+  background-color: #e7e7e7;
   padding: 2rem;
   width: 500px;
   border-radius: 4px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.modal-show {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .title {
@@ -73,11 +142,21 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
+  position: relative;
 }
 .title span {
   font-size: 1.2rem;
   color: #333;
   letter-spacing: 1px;
+}
+.title span::after {
+  content: "";
+  position: absolute;
+  background-color: #3876BF;
+  width: 50px;
+  height: 2px;
+  bottom: 0.5rem;
+  left: 2px;
 }
 .title button {
   border: 0;
@@ -98,6 +177,7 @@
   border: 0;
   border-bottom: 1px solid #333;
   padding: 0.6rem 0;
+  background: transparent;
 }
 
 .btn-modal {
@@ -114,61 +194,8 @@
   display: none;
 }
 
-.card-todo {
-  border: 2px solid #aaa;
-  border-radius: 4px;
-  padding: 1rem;
-  margin: 10px;
-  font-size: 0.9rem;
+.hidden {
   display: none;
-}
-.card-todo p {
-  margin-bottom: 0.5rem;
-  font-weight: bold;
-}
-.card-todo .date-todo {
-  color: #333;
-  font-weight: 400;
-}
-.card-todo .priority-todo {
-  font-weight: bold;
-}
-.card-todo .todo {
-  color: rgb(17, 14, 14);
-  font-family: "Roboto", sans-serif;
-  font-style: italic;
-  font-weight: 600;
-  letter-spacing: 2px;
-}
-.card-todo .high {
-  background-color: #8d2020;
-  color: #fff;
-  font-weight: 400;
-  text-align: center;
-  font-size: 0.9rem;
-  width: 50px;
-  border-radius: 4px;
-  padding: 0.2rem 0.5rem;
-}
-.card-todo .average {
-  background-color: #d3a21a;
-  color: #fff;
-  font-weight: 400;
-  text-align: center;
-  font-size: 0.9rem;
-  width: 50px;
-  border-radius: 4px;
-  padding: 0.2rem 0.5rem;
-}
-.card-todo .low {
-  background-color: #18b418;
-  color: #fff;
-  font-weight: 400;
-  text-align: center;
-  font-size: 0.9rem;
-  width: 50px;
-  border-radius: 4px;
-  padding: 0.2rem 0.5rem;
 }
 
 * {
@@ -184,7 +211,7 @@ select:focus {
 }
 
 body {
-  background-color: #d8d7d7;
+  background-color: #2b2e33;
   position: relative;
 }
 
