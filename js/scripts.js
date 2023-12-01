@@ -2,378 +2,380 @@
 const openModalBtn = document.querySelector("#open-modalBtn");
 const closeModalBtn = document.querySelector("#btn-closeModal");
 const modalContainer = document.querySelector(".modal-container");
-const boxModal = document.querySelector('.box-modal')
+const boxModal = document.querySelector(".box-modal");
 const titleBox = document.getElementById("title-box");
 
 const nameTodoInput = document.querySelector("#todo-input");
 const deadlineInput = document.querySelector("#deadline");
 const priorityInput = document.querySelector("#priority");
 const categoryInput = document.querySelector("#category");
+const idInput = document.getElementById("id-input");
 
 const btnAddTodo = document.querySelector("#btn-add-todo");
 const btnEditTodo = document.querySelector("#btn-edit-todo");
-const btnCreateTodo = document.querySelectorAll('.btn-create-todo')
+const btnCreateTodo = document.querySelectorAll(".btn-create-todo");
+const body = document.querySelectorAll(".body");
 
-const idInput = document.getElementById("id-input");
-let indexTodo
-const body = document.querySelectorAll('.body')
-
-const taskList = [];
+let indexTodo;
 let nextTodoId = 1;
 
+//A variável tasks armazena os dados que foram pegos no localStorage com o método getItem
+const tasks = localStorage.getItem("tasks");
+
+/*O array taskList verifica se essas taks exitem, se existirem trasnforma as tasks
+em objetos já que são strings, ou caso não tiver tasks no localStorage irá retornar um array vazio*/
+const taskList = tasks ? JSON.parse(tasks) : [];
+
+//Função createCardTodo é chamado para poder deixar salvo na tela as tasks que existem no localStorage
+createCardTodo();
 
 //Guardando as tarefas dentro de um objeto
-const createTask = () => {
-    const newTodo = {
-        id: nextTodoId,
-        deadline: deadlineInput.value,
-        todo: nameTodoInput.value,
-        priority: priorityInput.value,
-        category: categoryInput.value
-    };
-    
-    //Armazendo o objeto dentro de um array
-    taskList.push(newTodo);
-    console.log(taskList);
-    
-    //Acrescentando 1 no id depois de cada task criada
-    nextTodoId++;
-    
-    //Chamando a função que cria o card da tarefa
-    createCardTodo();
-};
+function createTask() {
+  const newTodo = {
+    id: nextTodoId,
+    deadline: deadlineInput.value,
+    todo: nameTodoInput.value,
+    priority: priorityInput.value,
+    category: categoryInput.value,
+  };
 
+  //Armazendo o objeto dentro de um array
+  taskList.push(newTodo);
+  console.log(taskList);
 
-const createCardTodo = () => {
-    // Limpar o body antes de recriar os cards
-    body.forEach((bodyElement) => {
-        bodyElement.innerHTML =''
+  //Pegando os objetos dentro do array taskList e armazendo em forma de string para o localStorage sob a chave tasks
+  localStorage.setItem("tasks", JSON.stringify(taskList));
+
+  //Acrescentando 1 no id depois de cada task criada
+  nextTodoId++;
+
+  //Chamando a função que cria o card da tarefa
+  createCardTodo();
+}
+
+//Criando as tarefas dinâmicamente
+function createCardTodo() {
+  // Limpar o body antes de recriar os cards
+  body.forEach((bodyElement) => {
+    bodyElement.innerHTML = "";
+  });
+
+  // Verificar se taskList é um array antes de iterar sobre ele
+  if (!Array.isArray(taskList)) {
+    console.error("Os dados salvos no localStorage não são um array.");
+    return;
+  }
+
+  //Percorrendo todos os objetos do array taskList
+  taskList.forEach((data) => {
+    // Criando elementos para cada tarefa
+
+    //Criando o card que armazenará as tarefas.
+    const cardTodo = document.createElement("div");
+    cardTodo.classList.add("card-todo");
+
+    //Parte do drag on drop
+    cardTodo.draggable = true;
+
+    cardTodo.id = `todo-${data.id}`;
+
+    cardTodo.addEventListener("dragstart", (event) => {
+      dragstartHandler(event, data);
     });
 
+    //pegando a div container do prazo e do icone de lixeira
+    const headerTodo = document.createElement("div");
+    headerTodo.classList.add("header-todo");
 
-    //Percorrendo todos os objetos do array taskList
-    taskList.forEach((data) => {
-      // Criando elementos para cada tarefa
+    //Formatando a data de prazo
+    const formattedDate = moment(data.deadline).format("DD/MM/YYYY");
 
-      //Criando o card que armazenará as tarefas.
-      const cardTodo = document.createElement("div");
-      cardTodo.classList.add("card-todo");
-      cardTodo.draggable = true
+    // Pegando a data de prazo
+    const dateTodoSpan = document.createElement("span");
+    dateTodoSpan.classList.add("date-todo");
+    dateTodoSpan.innerText = formattedDate;
 
-      cardTodo.id = `todo-${data.id}`;
+    const dateTodo = document.createElement("p");
+    dateTodo.textContent = "Prazo: ";
+    dateTodo.appendChild(dateTodoSpan);
 
-        cardTodo.addEventListener('dragstart', (event) => {
-            dragstartHandler(event, data);
-        });
-      
-  
-      //Formatando a data de prazo
-      const formattedDate = moment(data.deadline).format("DD/MM/YYYY");
+    //Chamando a função para checar se a data está no passado
+    checkDateTodo(formattedDate, dateTodoSpan);
 
-      // Pegando a data de prazo
-      const dateTodoSpan = document.createElement("span");
-      dateTodoSpan.classList.add("date-todo");
-      dateTodoSpan.innerText = formattedDate
-      
-      const dateTodo = document.createElement("p");
-      dateTodo.textContent = "Prazo: ";
-      dateTodo.appendChild(dateTodoSpan);
-      
-      //Chamando a função para checar se a data está no passado
-      checkDateTodo(formattedDate, dateTodoSpan);
+    //Criando o elemento do ícone
+    const trashIcon = document.createElement("i");
+    trashIcon.classList.add("fa-solid", "fa-trash", "trash");
 
-      //pegando a div container do prazo e do icone de lixeira
-      const headerTodo = document.createElement('div')
-      headerTodo.classList.add('header-todo')
+    headerTodo.appendChild(dateTodo);
+    headerTodo.appendChild(trashIcon);
 
-      const trashIcon = document.createElement('i')
-      trashIcon.classList.add("fa-solid", "fa-trash", "trash")
+    //Função que deleta as tarefas
+    delTodoCard(trashIcon, cardTodo, data.id);
 
-      headerTodo.appendChild(dateTodo)
-      headerTodo.appendChild(trashIcon)
-      
-      //Função que deleta as tarefas
-      delTodoCard(trashIcon, cardTodo, data)
+    // Pegando o nome da tarefa
+    const todo = document.createElement("p");
+    todo.classList.add("todo");
+    todo.innerText = data.todo;
 
-      // Pegando o nome da tarefa
-      const todo = document.createElement("p");
-      todo.classList.add("todo");
-      todo.innerText = data.todo;
-  
-      // Pegando a prioridade da tarefa
-      const prioritySpan = document.createElement("span");
-      prioritySpan.classList.add("priority-todo");
-      prioritySpan.innerText = data.priority;
-  
-      const priority = document.createElement("p");
-      priority.textContent = "Prioridade: ";
-      priority.appendChild(prioritySpan);
-  
-      // Verificando se a prioridade da tarefa é alta, média ou alta
-      switch (data.priority) {
-        case "Alta":
-          prioritySpan.classList.add("high");
-          break;
-        case "Média":
-          prioritySpan.classList.add("average");
-          break;
-        case "Baixa":
-          prioritySpan.classList.add("low");
-          break;
-        default:
-        }
-        
-        cardTodo.appendChild(headerTodo)
-        cardTodo.appendChild(todo);
-        cardTodo.appendChild(priority);
+    // Pegando a prioridade da tarefa
+    const prioritySpan = document.createElement("span");
+    prioritySpan.classList.add("priority-todo");
+    prioritySpan.innerText = data.priority;
 
-        // adicionando o cardTodo no body da coluna selecionada pelo usuário e colocando
-        // o cardTodo como filho desse body
-        const columnBody = document.querySelector(`[data-column='${data.category}'] .body`);
-        columnBody.appendChild(cardTodo)
+    const priority = document.createElement("p");
+    priority.textContent = "Prioridade: ";
+    priority.appendChild(prioritySpan);
 
+    // Verificando se a prioridade da tarefa é alta, média ou alta
+    switch (data.priority) {
+      case "Alta":
+        prioritySpan.classList.add("high");
+        break;
+      case "Média":
+        prioritySpan.classList.add("average");
+        break;
+      case "Baixa":
+        prioritySpan.classList.add("low");
+        break;
+      default:
+    }
 
-        // Chamando a função de edição
-        openModalEditTodo(cardTodo, data.id, data.category);
-    });
-};
+    cardTodo.appendChild(headerTodo);
+    cardTodo.appendChild(todo);
+    cardTodo.appendChild(priority);
 
-const openModalEditTodo = (cardTodo, id, category) => {
-    cardTodo.addEventListener("dblclick", (event) => {
+    // adicionando o cardTodo no body da coluna selecionada pelo usuário e colocando
+    // o cardTodo como filho desse body
+    const columnBody = document.querySelector(`[data-column='${data.category}'] .body`);
+    columnBody.appendChild(cardTodo);
 
-        //Pegando a categoria da tarefa que recebeu o dbclick
-        console.log(category)
-        //E adicionando a categoria da tarefa, no input de categoria
-        categoryInput.value = category
+    // Chamando a função de edição
+    openModalEditTodo(cardTodo, data.id, data.category);
+  });
+}
 
+function openModalEditTodo(cardTodo, id, category) {
+  cardTodo.addEventListener("dblclick", (event) => {
+    //Pegando a categoria da tarefa que recebeu o dbclick
+    console.log("Categoria da tarefa que recebeu o dbclick: ", category);
 
-        //Verificar se o clique não foi no ícone da lixeira
-        if(!event.target.classList.contains('trash'))  {
+    //E adicionando a categoria da tarefa, no input de categoria
+    categoryInput.value = category;
 
-            console.log('id da tarefa: ', id)
-            modalContainer.classList.add('modal-show')
-            
-            titleBox.innerText = "Edite sua Tarefa";
-            btnAddTodo.style.display = "none";
-            btnEditTodo.style.display = "block";
-    
-            /* O método findIndex está percorrendo os objeto nos index que existem, 
+    //Verificar se o clique não foi no ícone da lixeira
+    if (!event.target.classList.contains("trash")) {
+      console.log("id da tarefa: ", id);
+      modalContainer.classList.add("modal-show");
+
+      titleBox.innerText = "Edite sua Tarefa";
+      btnAddTodo.style.display = "none";
+      btnEditTodo.style.display = "block";
+
+      /* O método findIndex está percorrendo os objeto nos index que existem, 
             por exemplo se tiver dois objetos ele vai percorrer pelos index 0 e 1. 
             E com isso está vendo se o id do objeto é igual ao o id que foi fornecido, 
             ou seja, se o id fornecido for 2 ele vai retornar o objeto cujo o seu id é 2. 
             */
-    
-            const existingTodoIndex = taskList.findIndex((todo) => {
-                return todo.id == id;
-               
-            });
-    
-            console.log(
-            "Index do objeto que tem o id igual ao da tarefa em que o usuário clicou duas vezes:",
-            existingTodoIndex
-            );
-            
-            //Armazenando o index do objeto na variável indexTodo
-            indexTodo = existingTodoIndex
-            console.log(indexTodo)
-            const dataEdit = taskList[existingTodoIndex];
-    
-            // Preenchendo os campos do modal com os valores da tarefa existente
-            idInput.value = dataEdit.id; // id para controle de edição
-            nameTodoInput.value = dataEdit.todo;
-            deadlineInput.value = dataEdit.deadline;
-            priorityInput.value = dataEdit.priority;
-        }
-        
-    });
-};
-  
+
+      indexTodo = taskList.findIndex((todo) => {
+        return todo.id == id;
+      });
+
+      console.log(
+        "Index do objeto que tem o id igual ao da tarefa em que o usuário clicou duas vezes:",
+        indexTodo
+      );
+
+      console.log(indexTodo);
+      const dataEdit = taskList[indexTodo];
+
+      // Preenchendo os campos do modal com os valores da tarefa existente
+      idInput.value = dataEdit.id; // id para controle de edição
+      nameTodoInput.value = dataEdit.todo;
+      deadlineInput.value = dataEdit.deadline;
+      priorityInput.value = dataEdit.priority;
+    }
+  });
+}
 
 const openModal = () => {
-    modalContainer.classList.add('modal-show')
+  modalContainer.classList.add("modal-show");
 
-    titleBox.innerText = "Nova Tarefa";
-    btnAddTodo.style.display = "block";
-    btnEditTodo.style.display = "none";
+  titleBox.innerText = "Nova Tarefa";
+  btnAddTodo.style.display = "block";
+  btnEditTodo.style.display = "none";
 };
-
 
 //Guardando as tarefas editadas dentro de um novo objeto
 const editTask = () => {
-    console.log("Editando tarefa com ID:", idInput.value);
-    
-    const taskEdit = {
-        id: idInput.value,
-        deadline: deadlineInput.value,
-        todo: nameTodoInput.value,
-        priority: priorityInput.value,
-        category: categoryInput.value
-    };
-    
+  console.log("Editando tarefa com ID:", idInput.value);
 
-    //Substituindo o objeto editado pelo novo objeto
-    taskList[indexTodo] = taskEdit;
+  const taskEdit = {
+    id: idInput.value,
+    deadline: deadlineInput.value,
+    todo: nameTodoInput.value,
+    priority: priorityInput.value,
+    category: categoryInput.value,
+  };
 
-    console.log(taskList)
-    closeModal()
-    createCardTodo()
+  //Substituindo o objeto editado pelo novo objeto
+  taskList[indexTodo] = taskEdit;
 
+  //Pegando os objetos dentro do array taskList e armazendo em forma de string para o localStorage sob a chave tasks
+
+  localStorage.setItem("tasks", JSON.stringify(taskList));
+
+  console.log(taskList);
+  closeModal();
+  createCardTodo();
 };
 
-//Função que fecha o modal 
+//Função que fecha o modal
 const closeModal = () => {
-    modalContainer.classList.remove('modal-show')
-    idInput.value = "";
-    nameTodoInput.value = "";
-    deadlineInput.value = "";
+  modalContainer.classList.remove("modal-show");
+  idInput.value = "";
+  nameTodoInput.value = "";
+  deadlineInput.value = "";
 };
 
 //Função que verifica se a data está no passado com a biblioteca moment.js
-const checkDateTodo = (formattedDate,dateTodoSpan) => {
-    //Trasnformando o formattedDate em um objeto, já que ele é uma string
-    const formattedMoment = moment(formattedDate, "DD/MM/YYYY");
-    
-    //Pegando a data atual
-    const currentDate = moment();
-    
-    //Pegando a diferença de dias entre a data atual e a data que o usuário colocou no input
-    //O método diff serve para pegar essa diferença e 'day' é a diferença que a gente quer pegar
-    const diffInDays = formattedMoment.diff(currentDate, 'days')
-    
-    //Verificando se a data está no passado ou na data atual
-    if (diffInDays < 0) {
-      dateTodoSpan.classList.add('date-past')
-    }
-};
+function checkDateTodo(formattedDate, dateTodoSpan) {
+  //Trasnformando o formattedDate em um objeto, já que ele é uma string
+  const formattedMoment = moment(formattedDate, "DD/MM/YYYY");
 
-const delTodoCard = ( trashIcon, cardTodo, data) => {
-    trashIcon.addEventListener('click', () => {
-        cardTodo.remove()
-        console.log('id do objeto que está sendo deletado', data.id)
-       
-        //Percorrendo cada objeto para ver qual tem o id igual ao id do objeto deletado
-        const indexTodo = taskList.findIndex((todo) => {
-            return todo.id = data.id
-        })
+  //Pegando a data atual
+  const currentDate = moment();
 
-        //Removendo o objeto em que o id é igual ao do objeto deletado
-        taskList.splice(indexTodo, 1)
-        console.log(taskList)
+  //Pegando a diferença de dias entre a data atual e a data que o usuário colocou no input
+  //O método diff serve para pegar essa diferença e 'day' é a diferença que a gente quer pegar
+  const diffInDays = formattedMoment.diff(currentDate, "days");
 
-    })
+  //Verificando se a data está no passado ou na data atual
+  if (diffInDays < 0) {
+    dateTodoSpan.classList.add("date-past");
+  }
 }
 
+//Função que deleta as tarefas
+function delTodoCard(trashIcon, cardTodo, id) {
+  trashIcon.addEventListener("click", () => {
+    cardTodo.remove();
+    console.log("id do objeto que está sendo deletado", id);
 
+    //Percorrendo cada objeto para ver qual tem o id igual ao id do objeto deletado
+    const indexTodo = taskList.findIndex((todo) => {
+      return todo.id == id;
+    });
+
+    //Removendo o objeto em que o id é igual ao do objeto deletado
+    taskList.splice(indexTodo, 1);
+    console.log(taskList);
+
+    const todoFilter = taskList.filter((todo) => todo.id !== id);
+    localStorage.setItem("tasks", JSON.stringify(todoFilter));
+  });
+}
 
 //Eventos
 btnAddTodo.addEventListener("click", (e) => {
-    if (nameTodoInput.value == "" || deadlineInput.value == "" || priorityInput.value == "") {
-        alert("preencha todo os campos");
-        return;
-    }else {
+  if (
+    nameTodoInput.value == "" ||
+    deadlineInput.value == "" ||
+    priorityInput.value == ""
+  ) {
+    alert("preencha todo os campos");
+    return;
+  } else {
     createTask();
+  }
 
-    }
-
-    closeModal();
+  closeModal();
 });
 
 //Percorrendo cada botão e adicionando um evento de click
 btnCreateTodo.forEach((button) => {
+  button.addEventListener("click", (event) => {
+    //Pegando a div de coluna mais próxima atráves do alvo de onde ocorreu o click
+    const column = event.target.closest(".column");
 
-    button.addEventListener('click', (event) => {
-        //Pegando a div de coluna mais próxima atráves do alvo de onde ocorreu o click
-        const column = event.target.closest('.column')
+    //Pegando o valor do atributo data-column da coluna
+    const dataColumn = column.getAttribute("data-column");
 
-        //Pegando o valor do atributo data-column da coluna
-        const dataColumn = column.getAttribute('data-column')
-        
-        //Colocando o valor do input de categoria de acordo com a coluna que o usuário clicou
-        categoryInput.value = dataColumn
+    //Colocando o valor do input de categoria de acordo com a coluna que o usuário clicou
+    categoryInput.value = dataColumn;
 
-        openModal()
-
-    })
-})
+    openModal();
+  });
+});
 
 btnEditTodo.addEventListener("click", () => {
-    editTask();
-    closeModal();
+  editTask();
+  closeModal();
 });
 
 closeModalBtn.addEventListener("click", () => {
-    closeModal();
+  closeModal();
 });
 
-modalContainer.addEventListener('click', (e) => {
-    if(boxModal.contains(e.target)) return;
-    closeModal()
-})
+modalContainer.addEventListener("click", (e) => {
+  if (boxModal.contains(e.target)) return;
+  closeModal();
+});
 
-
-
+///////////////////////////////////////////////////////////////
 
 //Drag and Drop
-
 const dragstartHandler = (event, data) => {
-    console.log(event)
-    event.dataTransfer.setData('text/plain', JSON.stringify(data.id));
+  console.log(event);
+  event.dataTransfer.setData("text/plain", JSON.stringify(data.id));
 };
 
 // Função para lidar com o evento de soltar (drop)
 const dropHandler = (event) => {
-    event.preventDefault();
+  event.preventDefault();
 
-    // Obter o ID da tarefa do texto simples armazenado durante o evento de arrastar
-    const taskId = event.dataTransfer.getData('text/plain');
-    
-    // Obter a coluna de destino
-    const dropColumn = event.target.closest('.column');
+  // Obter o ID da tarefa do texto simples armazenado durante o evento de arrastar
+  const taskId = event.dataTransfer.getData("text/plain");
 
-    if (dropColumn && taskId) {
-        // Definir a nova categoria da tarefa com base na coluna de destino
-        const newCategory = dropColumn.getAttribute('data-column');
+  // Obter a coluna de destino
+  const dropColumn = event.target.closest(".column");
 
-        // Atualizar a categoria da tarefa no array
-        const taskIndex = taskList.findIndex((task) => task.id == taskId);
-        taskList[taskIndex].category = newCategory;
+  if (dropColumn && taskId) {
+    // Definir a nova categoria da tarefa com base na coluna de destino
+    const newCategory = dropColumn.getAttribute("data-column");
 
-        // Atualizar o conteúdo visual (recriar os cards)
-        createCardTodo();
-    }
+    // Atualizar a categoria da tarefa no array
+    const taskIndex = taskList.findIndex((task) => task.id == taskId);
+    taskList[taskIndex].category = newCategory;
+
+    //Pegando os objetos dentro do array taskList e armazendo em forma de string para o localStorage sob //a chave tasks
+    localStorage.setItem("tasks", JSON.stringify(taskList));
+
+    // Atualizar o conteúdo visual (recriar os cards)
+    createCardTodo();
+  }
 };
 
 // Função para lidar com o evento de arrastar sobre a coluna
 const dragOverHandler = (event) => {
-    event.preventDefault();
+  event.preventDefault();
 };
 
 // Adiciona os manipuladores de eventos para todas as colunas e cards
-const columns = document.querySelectorAll('.column');
+const columns = document.querySelectorAll(".column");
 columns.forEach((column) => {
-    column.addEventListener('drop', dropHandler);
-    column.addEventListener('dragover', dragOverHandler);
+  column.addEventListener("drop", dropHandler);
+  column.addEventListener("dragover", dragOverHandler);
 
-    const cards = column.querySelectorAll('.card-todo');
-    cards.forEach((card) => {
-        card.addEventListener('dragstart', (event) => {
-            // Obtém os dados da tarefa associada ao card
-            const cardId = card.id.split('-')[1];
-            const taskData = taskList.find((task) => task.id == cardId);
+  const cards = column.querySelectorAll(".card-todo");
+  cards.forEach((card) => {
+    card.addEventListener("dragstart", (event) => {
+      // Obtém os dados da tarefa associada ao card
+      const cardId = card.id.split("-")[1];
+      const taskData = taskList.find((task) => task.id == cardId);
 
-            // Inicia o processo de arrastar
-            dragstartHandler(event, taskData);
-        });
+      // Inicia o processo de arrastar
+      dragstartHandler(event, taskData);
     });
+  });
 });
-
-
-
-
-
-
-
-
-
-
-
