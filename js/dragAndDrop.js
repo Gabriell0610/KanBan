@@ -1,4 +1,4 @@
-import { taskList, createCardTodo } from "./scripts.js";
+import { taskList, createCardTodo } from "./app.js";
 
 //Drag and Drop
 export const dragstartHandler = (event, data) => {

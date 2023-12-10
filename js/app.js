@@ -1,4 +1,4 @@
-import { dragstartHandler, dropHandler, dragOverHandler} from './dragAndDrop.js'
+import { dragstartHandler} from './dragAndDrop.js'
 
 //Pegando os elementos
 const closeModalBtn = document.querySelector("#btn-closeModal");
