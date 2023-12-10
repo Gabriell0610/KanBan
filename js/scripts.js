@@ -1,5 +1,6 @@
+import { dragstartHandler, dropHandler, dragOverHandler} from './dragAndDrop.js'
+
 //Pegando os elementos
-const openModalBtn = document.querySelector("#open-modalBtn");
 const closeModalBtn = document.querySelector("#btn-closeModal");
 const modalContainer = document.querySelector(".modal-container");
 const boxModal = document.querySelector(".box-modal");
@@ -17,16 +18,18 @@ const btnCreateTodo = document.querySelectorAll(".btn-create-todo");
 const body = document.querySelectorAll(".body");
 
 let indexTodo;
-let nextTodoId = 1;
+//Criando o id com números aleatórios para não ter conflito de ID
+let nextTodoId = Math.floor(Math.random() * 5000)
 
 //A variável tasks armazena os dados que foram pegos no localStorage com o método getItem
 const tasks = localStorage.getItem("tasks");
 
-/*O array taskList verifica se essas taks exitem, se existirem trasnforma as tasks
+/*O array taskList verifica se essas taks exitem, se existirem transforma as tasks
 em objetos já que são strings, ou caso não tiver tasks no localStorage irá retornar um array vazio*/
-const taskList = tasks ? JSON.parse(tasks) : [];
+export const taskList = tasks ? JSON.parse(tasks) : [];
+console.log(taskList)
 
-//Função createCardTodo é chamado para poder deixar salvo na tela as tasks que existem no localStorage
+//Função createCardTodo é chamado para deixar visível na tela as tasks que existem no localStorage
 createCardTodo();
 
 //Guardando as tarefas dentro de um objeto
@@ -39,22 +42,19 @@ function createTask() {
     category: categoryInput.value,
   };
 
-  //Armazendo o objeto dentro de um array
+  //Armazenando o objeto dentro de um array
   taskList.push(newTodo);
   console.log(taskList);
 
-  //Pegando os objetos dentro do array taskList e armazendo em forma de string para o localStorage sob a chave tasks
+  //Pegando os objetos dentro do array taskList e armazenando em forma de string para o localStorage sob a chave tasks
   localStorage.setItem("tasks", JSON.stringify(taskList));
-
-  //Acrescentando 1 no id depois de cada task criada
-  nextTodoId++;
 
   //Chamando a função que cria o card da tarefa
   createCardTodo();
 }
 
 //Criando as tarefas dinâmicamente
-function createCardTodo() {
+export function createCardTodo() {
   // Limpar o body antes de recriar os cards
   body.forEach((bodyElement) => {
     bodyElement.innerHTML = "";
@@ -74,6 +74,7 @@ function createCardTodo() {
     const cardTodo = document.createElement("div");
     cardTodo.classList.add("card-todo");
 
+    ///////////////////////////////////////////////////////////
     //Parte do drag on drop
     cardTodo.draggable = true;
 
@@ -82,10 +83,7 @@ function createCardTodo() {
     cardTodo.addEventListener("dragstart", (event) => {
       dragstartHandler(event, data);
     });
-
-    //pegando a div container do prazo e do icone de lixeira
-    const headerTodo = document.createElement("div");
-    headerTodo.classList.add("header-todo");
+    //////////////////////////////////////////////////////////
 
     //Formatando a data de prazo
     const formattedDate = moment(data.deadline).format("DD/MM/YYYY");
@@ -102,12 +100,9 @@ function createCardTodo() {
     //Chamando a função para checar se a data está no passado
     checkDateTodo(formattedDate, dateTodoSpan);
 
-    //Criando o elemento do ícone
+    //Criando o elemento do ícone de lixeira
     const trashIcon = document.createElement("i");
     trashIcon.classList.add("fa-solid", "fa-trash", "trash");
-
-    headerTodo.appendChild(dateTodo);
-    headerTodo.appendChild(trashIcon);
 
     //Função que deleta as tarefas
     delTodoCard(trashIcon, cardTodo, data.id);
@@ -140,9 +135,10 @@ function createCardTodo() {
       default:
     }
 
-    cardTodo.appendChild(headerTodo);
+    cardTodo.appendChild(dateTodo)
     cardTodo.appendChild(todo);
     cardTodo.appendChild(priority);
+    cardTodo.appendChild(trashIcon)
 
     // adicionando o cardTodo no body da coluna selecionada pelo usuário e colocando
     // o cardTodo como filho desse body
@@ -159,23 +155,25 @@ function openModalEditTodo(cardTodo, id, category) {
     //Pegando a categoria da tarefa que recebeu o dbclick
     console.log("Categoria da tarefa que recebeu o dbclick: ", category);
 
-    //E adicionando a categoria da tarefa, no input de categoria
+    //Adicionando a categoria da tarefa, no input de categoria
+    //Pois antes, o input de categoria tinha o valor da última categoria selecionada
     categoryInput.value = category;
 
-    //Verificar se o clique não foi no ícone da lixeira
+    //Verificar se o clique não foi no ícone da lixeira para nao ocorrer nenhum conflito
     if (!event.target.classList.contains("trash")) {
-      console.log("id da tarefa: ", id);
+      console.log("id da tarefa que recebeu o dblclick: ", id);
       modalContainer.classList.add("modal-show");
 
+      //Mudando características do modal para modo de edição
       titleBox.innerText = "Edite sua Tarefa";
       btnAddTodo.style.display = "none";
       btnEditTodo.style.display = "block";
 
       /* O método findIndex está percorrendo os objeto nos index que existem, 
-            por exemplo se tiver dois objetos ele vai percorrer pelos index 0 e 1. 
-            E com isso está vendo se o id do objeto é igual ao o id que foi fornecido, 
-            ou seja, se o id fornecido for 2 ele vai retornar o objeto cujo o seu id é 2. 
-            */
+        por exemplo se tiver dois objetos ele vai percorrer pelos index 0 e 1. 
+        E com isso está vendo se o id do objeto é igual ao o id que foi fornecido, 
+        ou seja, se o id fornecido for 2 ele vai retornar o index do objeto cujo o seu id é 2. 
+      */
 
       indexTodo = taskList.findIndex((todo) => {
         return todo.id == id;
@@ -186,7 +184,7 @@ function openModalEditTodo(cardTodo, id, category) {
         indexTodo
       );
 
-      console.log(indexTodo);
+
       const dataEdit = taskList[indexTodo];
 
       // Preenchendo os campos do modal com os valores da tarefa existente
@@ -211,7 +209,8 @@ const editTask = () => {
   console.log("Editando tarefa com ID:", idInput.value);
 
   const taskEdit = {
-    id: idInput.value,
+    //Passando o valor do idInput para Número, pois ele está sendo salvo após editar como uma string
+    id: Number(idInput.value),
     deadline: deadlineInput.value,
     todo: nameTodoInput.value,
     priority: priorityInput.value,
@@ -221,11 +220,10 @@ const editTask = () => {
   //Substituindo o objeto editado pelo novo objeto
   taskList[indexTodo] = taskEdit;
 
+  console.log(taskList);
   //Pegando os objetos dentro do array taskList e armazendo em forma de string para o localStorage sob a chave tasks
-
   localStorage.setItem("tasks", JSON.stringify(taskList));
 
-  console.log(taskList);
   closeModal();
   createCardTodo();
 };
@@ -271,6 +269,7 @@ function delTodoCard(trashIcon, cardTodo, id) {
     taskList.splice(indexTodo, 1);
     console.log(taskList);
 
+    //Pegando os os objetos que tem o id diferente do id que foi deletado e salvando no localStorage
     const todoFilter = taskList.filter((todo) => todo.id !== id);
     localStorage.setItem("tasks", JSON.stringify(todoFilter));
   });
@@ -300,6 +299,7 @@ btnCreateTodo.forEach((button) => {
 
     //Pegando o valor do atributo data-column da coluna
     const dataColumn = column.getAttribute("data-column");
+    console.log(dataColumn)
 
     //Colocando o valor do input de categoria de acordo com a coluna que o usuário clicou
     categoryInput.value = dataColumn;
@@ -322,44 +322,7 @@ modalContainer.addEventListener("click", (e) => {
   closeModal();
 });
 
-///////////////////////////////////////////////////////////////
-
-//Drag and Drop
-const dragstartHandler = (event, data) => {
-  console.log(event);
-  event.dataTransfer.setData("text/plain", JSON.stringify(data.id));
-};
-
-// Função para lidar com o evento de soltar (drop)
-const dropHandler = (event) => {
-  event.preventDefault();
-
-  // Obter o ID da tarefa do texto simples armazenado durante o evento de arrastar
-  const taskId = event.dataTransfer.getData("text/plain");
-
-  // Obter a coluna de destino
-  const dropColumn = event.target.closest(".column");
-
-  if (dropColumn && taskId) {
-    // Definir a nova categoria da tarefa com base na coluna de destino
-    const newCategory = dropColumn.getAttribute("data-column");
-
-    // Atualizar a categoria da tarefa no array
-    const taskIndex = taskList.findIndex((task) => task.id == taskId);
-    taskList[taskIndex].category = newCategory;
-
-    //Pegando os objetos dentro do array taskList e armazendo em forma de string para o localStorage sob //a chave tasks
-    localStorage.setItem("tasks", JSON.stringify(taskList));
-
-    // Atualizar o conteúdo visual (recriar os cards)
-    createCardTodo();
-  }
-};
-
-// Função para lidar com o evento de arrastar sobre a coluna
-const dragOverHandler = (event) => {
-  event.preventDefault();
-};
+// Parte dragg and drop
 
 // Adiciona os manipuladores de eventos para todas as colunas e cards
 const columns = document.querySelectorAll(".column");
