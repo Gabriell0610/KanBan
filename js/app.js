@@ -1,4 +1,4 @@
-import { dragstartHandler} from './dragAndDrop.js'
+import { dragstartHandler } from "./dragAndDrop.js";
 
 //Pegando os elementos
 const closeModalBtn = document.querySelector("#btn-closeModal");
@@ -19,7 +19,7 @@ const body = document.querySelectorAll(".body");
 
 let indexTodo;
 //Criando o id com números aleatórios para não ter conflito de ID
-let nextTodoId = Math.floor(Math.random() * 5000)
+let nextTodoId = Math.floor(Math.random() * 5000);
 
 //A variável tasks armazena os dados que foram pegos no localStorage com o método getItem
 const tasks = localStorage.getItem("tasks");
@@ -27,7 +27,7 @@ const tasks = localStorage.getItem("tasks");
 /*O array taskList verifica se essas taks exitem, se existirem transforma as tasks
 em objetos já que são strings, ou caso não tiver tasks no localStorage irá retornar um array vazio*/
 export const taskList = tasks ? JSON.parse(tasks) : [];
-console.log(taskList)
+console.log(taskList);
 
 //Função createCardTodo é chamado para deixar visível na tela as tasks que existem no localStorage
 createCardTodo();
@@ -74,7 +74,6 @@ export function createCardTodo() {
     const cardTodo = document.createElement("div");
     cardTodo.classList.add("card-todo");
 
-    ///////////////////////////////////////////////////////////
     //Parte do drag on drop
     cardTodo.draggable = true;
 
@@ -83,9 +82,8 @@ export function createCardTodo() {
     cardTodo.addEventListener("dragstart", (event) => {
       dragstartHandler(event, data);
     });
-    //////////////////////////////////////////////////////////
 
-    //Formatando a data de prazo
+    //Formatando a data de prazo com biblioteca moment
     const formattedDate = moment(data.deadline).format("DD/MM/YYYY");
 
     // Pegando a data de prazo
@@ -100,7 +98,7 @@ export function createCardTodo() {
     //Chamando a função para checar se a data está no passado
     checkDateTodo(formattedDate, dateTodoSpan);
 
-    //Criando o elemento do ícone de lixeira
+    //Criando o ícone de lixeira
     const trashIcon = document.createElement("i");
     trashIcon.classList.add("fa-solid", "fa-trash", "trash");
 
@@ -135,64 +133,66 @@ export function createCardTodo() {
       default:
     }
 
-    cardTodo.appendChild(dateTodo)
+    //Criando o ícone de editar
+    const editIcon = document.createElement("i");
+    editIcon.classList.add("fa-solid", "fa-pen-to-square", "edit-icon");
+
+    cardTodo.appendChild(dateTodo);
     cardTodo.appendChild(todo);
     cardTodo.appendChild(priority);
-    cardTodo.appendChild(trashIcon)
+    cardTodo.appendChild(trashIcon);
+    cardTodo.appendChild(editIcon);
 
     // adicionando o cardTodo no body da coluna selecionada pelo usuário e colocando
     // o cardTodo como filho desse body
-    const columnBody = document.querySelector(`[data-column='${data.category}'] .body`);
+    const columnBody = document.querySelector(
+      `[data-column='${data.category}'] .body`
+    );
     columnBody.appendChild(cardTodo);
 
     // Chamando a função de edição
-    openModalEditTodo(cardTodo, data.id, data.category);
+    openModalEditTodo(editIcon, data.id, data.category);
   });
 }
 
-function openModalEditTodo(cardTodo, id, category) {
-  cardTodo.addEventListener("dblclick", (event) => {
+function openModalEditTodo(editIcon, id, category) {
+  editIcon.addEventListener("click", (event) => {
     //Pegando a categoria da tarefa que recebeu o dbclick
     console.log("Categoria da tarefa que recebeu o dbclick: ", category);
 
     //Adicionando a categoria da tarefa, no input de categoria
     //Pois antes, o input de categoria tinha o valor da última categoria selecionada
     categoryInput.value = category;
+    console.log("id da tarefa que recebeu o dblclick: ", id);
+    modalContainer.classList.add("modal-show");
 
-    //Verificar se o clique não foi no ícone da lixeira para nao ocorrer nenhum conflito
-    if (!event.target.classList.contains("trash")) {
-      console.log("id da tarefa que recebeu o dblclick: ", id);
-      modalContainer.classList.add("modal-show");
+    //Mudando características do modal para modo de edição
+    titleBox.innerText = "Edite sua Tarefa";
+    btnAddTodo.style.display = "none";
+    btnEditTodo.style.display = "block";
 
-      //Mudando características do modal para modo de edição
-      titleBox.innerText = "Edite sua Tarefa";
-      btnAddTodo.style.display = "none";
-      btnEditTodo.style.display = "block";
-
-      /* O método findIndex está percorrendo os objeto nos index que existem, 
+    /* O método findIndex está percorrendo os objeto nos index que existem, 
         por exemplo se tiver dois objetos ele vai percorrer pelos index 0 e 1. 
         E com isso está vendo se o id do objeto é igual ao o id que foi fornecido, 
         ou seja, se o id fornecido for 2 ele vai retornar o index do objeto cujo o seu id é 2. 
       */
 
-      indexTodo = taskList.findIndex((todo) => {
-        return todo.id == id;
-      });
+    indexTodo = taskList.findIndex((todo) => {
+      return todo.id == id;
+    });
 
-      console.log(
-        "Index do objeto que tem o id igual ao da tarefa em que o usuário clicou duas vezes:",
-        indexTodo
-      );
+    console.log(
+      "Index do objeto que tem o id igual ao da tarefa em que o usuário clicou duas vezes:",
+      indexTodo
+    );
 
+    const dataEdit = taskList[indexTodo];
 
-      const dataEdit = taskList[indexTodo];
-
-      // Preenchendo os campos do modal com os valores da tarefa existente
-      idInput.value = dataEdit.id; // id para controle de edição
-      nameTodoInput.value = dataEdit.todo;
-      deadlineInput.value = dataEdit.deadline;
-      priorityInput.value = dataEdit.priority;
-    }
+    // Preenchendo os campos do modal com os valores da tarefa existente
+    idInput.value = dataEdit.id; // id para controle de edição
+    nameTodoInput.value = dataEdit.todo;
+    deadlineInput.value = dataEdit.deadline;
+    priorityInput.value = dataEdit.priority;
   });
 }
 
@@ -299,7 +299,7 @@ btnCreateTodo.forEach((button) => {
 
     //Pegando o valor do atributo data-column da coluna
     const dataColumn = column.getAttribute("data-column");
-    console.log(dataColumn)
+    console.log(dataColumn);
 
     //Colocando o valor do input de categoria de acordo com a coluna que o usuário clicou
     categoryInput.value = dataColumn;
@@ -321,7 +321,4 @@ modalContainer.addEventListener("click", (e) => {
   if (boxModal.contains(e.target)) return;
   closeModal();
 });
-
-// Parte dragg and drop
-
 
