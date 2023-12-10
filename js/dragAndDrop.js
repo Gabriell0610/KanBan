@@ -37,3 +37,22 @@ export const dropHandler = (event) => {
 export const dragOverHandler = (event) => {
     event.preventDefault();
 };
+
+// Adiciona os manipuladores de eventos para todas as colunas e cards
+const columns = document.querySelectorAll(".column");
+columns.forEach((column) => {
+  column.addEventListener("drop", dropHandler);
+  column.addEventListener("dragover", dragOverHandler);
+
+  const cards = column.querySelectorAll(".card-todo");
+  cards.forEach((card) => {
+    card.addEventListener("dragstart", (event) => {
+      // Obtém os dados da tarefa associada ao card
+      const cardId = card.id.split("-")[1];
+      const taskData = taskList.find((task) => task.id == cardId);
+
+      // Inicia o processo de arrastar
+      dragstartHandler(event, taskData);
+    });
+  });
+});
