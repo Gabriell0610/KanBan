@@ -15,4 +15,4 @@ Projeto em fase de criação, vou melhorar diversas coisas e depois de um tempo 
 ![Alt text](image.png)
 
 ## Acesse o projeto pelo link abaixo 🔗
-<a href=''>Projeto</a>
+<a href='https://kanban-dev.vercel.app/'>Projeto</a>
