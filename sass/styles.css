@@ -62,6 +62,7 @@
   padding: 1rem;
   margin: 10px auto;
   font-size: 0.9rem;
+  position: relative;
 }
 .card-todo p {
   margin-bottom: 0.5rem;
@@ -99,12 +100,10 @@
   color: #f33636;
   font-weight: bold;
 }
-.card-todo .header-todo {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
 .card-todo .trash {
+  position: absolute;
+  top: 15px;
+  left: 90%;
   font-size: 1rem;
   margin-bottom: 0.4rem;
   cursor: pointer;
@@ -156,7 +155,7 @@
   width: 50px;
   height: 2px;
   bottom: 0.5rem;
-  left: 2px;
+  left: 1px;
 }
 .title button {
   border: 0;

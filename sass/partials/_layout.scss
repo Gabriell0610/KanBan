@@ -73,6 +73,7 @@
     padding: 1rem;
     margin: 10px auto;
     font-size: 0.9rem;
+    position: relative;
 
     p {
         margin-bottom: .5rem;
@@ -119,17 +120,15 @@
         font-weight: bold;
     }
 
-    .header-todo  {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
 
     .trash {
-       font-size: 1rem;
-       margin-bottom: .4rem;
-       cursor: pointer;
-       color: $color-black;
+        position: absolute;
+        top: 15px;
+        left: 90%;
+        font-size: 1rem;
+        margin-bottom: .4rem;
+        cursor: pointer;
+        color: $color-black;
     }
 }
 
