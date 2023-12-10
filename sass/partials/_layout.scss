@@ -67,16 +67,16 @@
 }
 
 
-
 .card-todo {
     background-color: $color-white;
     padding: 1rem;
     margin: 10px auto;
     font-size: 0.9rem;
     position: relative;
+    cursor: pointer;
 
     p {
-        margin-bottom: .5rem;
+        margin-bottom: .7rem;
         font-weight: bold;
     }
 
@@ -100,6 +100,7 @@
         font-family: Arial, Helvetica, sans-serif;
         font-weight: 400;
         letter-spacing: 1px;
+        font-size: 1rem;
     }
 
     
@@ -125,7 +126,17 @@
         position: absolute;
         top: 15px;
         left: 90%;
-        font-size: 1rem;
+        font-size: 1.1rem;
+        margin-bottom: .4rem;
+        cursor: pointer;
+        color: $color-black;
+    }
+
+    .edit-icon {
+        position: absolute;
+        top: 75px;
+        left: 90%;
+        font-size: 1.1rem;
         margin-bottom: .4rem;
         cursor: pointer;
         color: $color-black;
@@ -152,6 +163,68 @@
         border-radius: 4px;
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     }
+    .title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        position: relative;
+    
+    
+        span {
+            font-size: 1.2rem;
+            color: $color-black;
+            letter-spacing: 1px;
+        }
+    
+        span::after {
+            content: '';
+            position: absolute;
+            background-color: $blue-dark;
+            width: 50px;
+            height: 2px;
+            bottom: .5rem;
+            left: 1px;
+    
+        }
+    
+        button {
+            border: 0;
+            background-color: transparent;
+            font-size: 1.6rem;
+            color: $red-del;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    }
+    
+    .form-group {
+        margin-bottom: .9rem;
+        display: flex;
+        flex-direction: column;
+    
+        input, 
+        select {
+            border: 0;
+            border-bottom: 1px solid $color-black;
+            padding: .6rem 0;
+            background: transparent;
+        }
+    }
+    
+    .btn-modal {
+        float: right;
+        background-color: $blue-dark;
+        color: $white;
+    }
+    
+    #btn-add-todo {
+        display: block;
+    }
+    
+    #btn-edit-todo {
+        display: none;
+    }
 }
 
 .modal-show {
@@ -160,74 +233,11 @@
 }
 
 
-.title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-    position: relative;
-
-
-    span {
-        font-size: 1.2rem;
-        color: $color-black;
-        letter-spacing: 1px;
-    }
-
-    span::after {
-        content: '';
-        position: absolute;
-        background-color: $blue-dark;
-        width: 50px;
-        height: 2px;
-        bottom: .5rem;
-        left: 1px;
-
-    }
-
-    button {
-        border: 0;
-        background-color: transparent;
-        font-size: 1.6rem;
-        color: $red-del;
-        cursor: pointer;
-        font-weight: bold;
-    }
-
-
-}
-
-.form-group {
-    margin-bottom: .9rem;
-    display: flex;
-    flex-direction: column;
-
-    input, 
-    select {
-        border: 0;
-        border-bottom: 1px solid $color-black;
-        padding: .6rem 0;
-        background: transparent;
-    }
-}
-
-.btn-modal {
-    float: right;
-    background-color: $blue-dark;
-    color: $white;
-}
-
-#btn-add-todo {
-    display: block;
-}
-
-#btn-edit-todo {
-    display: none;
-}
-
 .hidden {
     display: none;
 }
+
+
 
 
 
