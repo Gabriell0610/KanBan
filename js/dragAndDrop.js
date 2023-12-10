@@ -7,7 +7,7 @@ export const dragstartHandler = (event, data) => {
 };
   
 // Função para lidar com o evento de soltar (drop)
-export const dropHandler = (event) => {
+const dropHandler = (event) => {
     event.preventDefault();
   
     // Obter o ID da tarefa do texto simples armazenado durante o evento de arrastar
@@ -19,7 +19,6 @@ export const dropHandler = (event) => {
     if (dropColumn && taskId) {
       // Definir a nova categoria da tarefa com base na coluna de destino
       const newCategory = dropColumn.getAttribute("data-column");
-  
   
       // Atualizar a categoria da tarefa no array
       const taskIndex = taskList.findIndex((task) => task.id == taskId);
@@ -34,7 +33,7 @@ export const dropHandler = (event) => {
 };
   
 // Função para lidar com o evento de arrastar sobre a coluna
-export const dragOverHandler = (event) => {
+const dragOverHandler = (event) => {
     event.preventDefault();
 };
 
