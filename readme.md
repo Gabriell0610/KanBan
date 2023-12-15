@@ -14,4 +14,5 @@ Projeto em fase de criação, vou melhorar diversas coisas e depois de um tempo 
 ## Design 🎨
 ![Alt text](image.png)
 
-
+## Acesse o projeto pelo link abaixo 🔗
+<a href='https://kan-ban-pink.vercel.app/'>Projeto</a>
