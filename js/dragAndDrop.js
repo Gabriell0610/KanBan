@@ -2,8 +2,8 @@ import { taskList, createCardTodo } from "./app.js";
 
 //Drag and Drop
 export const dragstartHandler = (event, data) => {
-    console.log(event);
-    event.dataTransfer.setData("text/plain", JSON.stringify(data.id));
+  console.log(event);
+  event.dataTransfer.setData("text/plain", JSON.stringify(data.id));
 };
   
 // Função para lidar com o evento de soltar (drop)
