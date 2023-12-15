@@ -18,8 +18,6 @@ const btnCreateTodo = document.querySelectorAll(".btn-create-todo");
 const body = document.querySelectorAll(".body");
 
 let indexTodo;
-//Criando o id com números aleatórios para não ter conflito de ID
-let nextTodoId = Math.floor(Math.random() * 5000);
 
 //A variável tasks armazena os dados que foram pegos no localStorage com o método getItem
 const tasks = localStorage.getItem("tasks");
@@ -34,6 +32,9 @@ createCardTodo();
 
 //Guardando as tarefas dentro de um objeto
 function createTask() {
+  
+  //Criando o id com números aleatórios para não ter conflito de ID
+  let nextTodoId = Math.floor(Math.random() * 5000);
   const newTodo = {
     id: nextTodoId,
     deadline: deadlineInput.value,
@@ -48,6 +49,7 @@ function createTask() {
 
   //Pegando os objetos dentro do array taskList e armazenando em forma de string para o localStorage sob a chave tasks
   localStorage.setItem("tasks", JSON.stringify(taskList));
+
 
   //Chamando a função que cria o card da tarefa
   createCardTodo();
