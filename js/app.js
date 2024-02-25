@@ -32,7 +32,6 @@ createCardTodo();
 
 //Guardando as tarefas dentro de um objeto
 function createTask() {
-  
   //Criando o id com números aleatórios para não ter conflito de ID
   let nextTodoId = Math.floor(Math.random() * 5000);
   const newTodo = {
@@ -49,7 +48,6 @@ function createTask() {
 
   //Pegando os objetos dentro do array taskList e armazenando em forma de string para o localStorage sob a chave tasks
   localStorage.setItem("tasks", JSON.stringify(taskList));
-
 
   //Chamando a função que cria o card da tarefa
   createCardTodo();
@@ -121,7 +119,7 @@ export function createCardTodo() {
     priority.textContent = "Prioridade: ";
     priority.appendChild(prioritySpan);
 
-    // Verificando se a prioridade da tarefa é alta, média ou alta
+    // Verificando se a prioridade da tarefa é alta, média ou baixa
     switch (data.priority) {
       case "Alta":
         prioritySpan.classList.add("high");
@@ -323,4 +321,3 @@ modalContainer.addEventListener("click", (e) => {
   if (boxModal.contains(e.target)) return;
   closeModal();
 });
-
