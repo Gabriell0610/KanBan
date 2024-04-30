@@ -1,10 +1,8 @@
 # Projeto KanBan 
-Projeto para treinar javascript, pois é um projeto com diversas funcionalidades.
-
-Projeto em fase de criação, vou melhorar diversas coisas e depois de um tempo vou recria-lo em react ou angular.
+Projeto criado para colocar em prática o que aprendi em javascript
+Os dados estão sendo salvos no localStorage
 
 ## Tecnologias 🚀
-
 - HTML
 - SASS
 - JAVASCRIPT
